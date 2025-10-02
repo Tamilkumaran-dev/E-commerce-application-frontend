@@ -104,6 +104,7 @@ export default function Product() {
           ) : (
             <button onClick={() => navigate("/auth")}>Login to buy</button>
           )}
+          <p>Cash on delivery only</p>
         </div>
       ) : (
         <div>Product not found</div>

@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginContext } from "../App";
+import { LoginContext } from "../../App";
 
-export default function Home() {
-  const isLoggedIn = useContext(LoginContext);
+export default function EditProductList() {
 
   const [products, setProducts] = useState([]);
   const [searchBar, setSearchBar] = useState("");
@@ -54,7 +53,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Home {`${isLoggedIn}`}</h1>
+      <h1>Edit products</h1>
 
       <div>
         <input
@@ -68,7 +67,7 @@ export default function Home() {
       <ul>
         {products.map((product) => (
           <li key={product.id}>
-            <Link to={`/product/${product.id}`}>
+            <Link to={`/editProduct/${product.id}`}>
               <div>
                 <img src={product.image} alt="img" width={100} height={100} />
                 <h2>{product.productName}</h2>

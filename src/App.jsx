@@ -8,6 +8,10 @@ import { useState ,createContext, useEffect} from 'react'
 import Product from './page/Product'
 import Cart from './page/Cart'
 import Order from './page/Order'
+import AddProduct from './page/adminPages/AddProduct'
+import EditProduct from './page/adminPages/EditProduct'
+import EditProductList from './page/adminPages/EditProductList'
+import UserOrder from './page/adminPages/UserOrders'
 
 export const LoginContext = createContext();  
 
@@ -28,6 +32,11 @@ function App() {
         <Route path='/product/:productId' element={<Product/>}/>
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/orders' element={<Order/>}/>
+        <Route path='/addProduct' element={<AddProduct/>}/>
+        <Route path='/editProduct' element={<EditProductList/>}/>
+        <Route path='/editProduct/:productId' element={<EditProduct/>}/>
+        <Route path='/userOrders' element={<UserOrder/>}/>
+
       </Routes>
     </BrowserRouter>
     </LoginContext.Provider>
