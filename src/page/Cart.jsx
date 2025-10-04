@@ -7,9 +7,10 @@ export default function Cart() {
   const isLoggedIn = useContext(LoginContext);
   const [cart, setCart] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // compute total dynamically instead of setting inside map
+  // Compute total price dynamically
   const totalPrice = useMemo(
     () => cart.reduce((acc, product) => acc + product.price, 0),
     [cart]
@@ -17,6 +18,7 @@ export default function Cart() {
 
   const getCart = async () => {
     try {
+      setLoading(true);
       const res = await axios.get(
         `${import.meta.env.VITE_BASE_URL}cart/userCart`,
         { withCredentials: true }
@@ -28,6 +30,8 @@ export default function Cart() {
     } catch (err) {
       console.log("getCart method throwing error", err);
       setUserId(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,7 +73,6 @@ export default function Cart() {
             {},
             { withCredentials: true }
           );
-          
           alert(res.data.message);
           getCart();
         } catch (err) {
@@ -81,9 +84,7 @@ export default function Cart() {
           }
         }
       } else {
-        alert(
-          "You haven't completed your profile. Please complete profile first."
-        );
+        alert("You haven't completed your profile. Please complete profile first.");
         navigate("/profile");
       }
     } catch (err) {
@@ -92,43 +93,64 @@ export default function Cart() {
   };
 
   return (
-    <div>
-      <div>
-        <ul>
-          {cart.length > 0 ? (
-            cart.map((product) => (
-              <li key={product.id}>
-                <div>
+    <div className="p-6 min-h-screen bg-gray-50">
+      <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
+
+      {loading ? (
+        <p>Loading cart...</p>
+      ) : cart.length > 0 ? (
+        <>
+          <ul className="space-y-4">
+            {cart.map((product, index) => (
+              <li
+                key={product.id || index}
+                className="flex items-center justify-between bg-white shadow p-4 rounded-lg"
+              >
+                <div className="flex items-center space-x-4">
                   <img
                     src={product.image}
-                    alt="image"
-                    width={100}
-                    height={100}
+                    alt={product.productName}
+                    className="w-20 h-20 object-cover rounded"
                   />
-                  <h2>{product.productName}</h2>
-                  <p>{product.description}</p>
-                  <h2>{product.price}</h2>
-                  <button onClick={() => removeProduct(product.id)}>
-                    remove
-                  </button>
+                  <div>
+                    <h2 className="text-lg font-semibold">{product.productName}</h2>
+                    <p className="text-sm text-gray-600">{product.description}</p>
+                    <p className="text-green-600 font-bold">₹{product.price}</p>
+                  </div>
                 </div>
+                <button
+                  onClick={() => removeProduct(product.id)}
+                  className="text-red-500 hover:text-red-700 font-semibold"
+                >
+                  Remove
+                </button>
               </li>
-            ))
-          ) : (
-            <div>
-              <h2>Cart is empty, please add products to place the order</h2>
-            </div>
-          )}
-        </ul>
-      </div>
-      <div>
-        {cart.length > 0 && (
-          <div>
-            <h2>Total price : {totalPrice}</h2>
-            <button onClick={placeOrder}>Order Now</button>
+            ))}
+          </ul>
+
+          <div className="mt-6 p-4 bg-white shadow rounded-lg flex items-center justify-between">
+            <h2 className="text-xl font-bold">Total: ₹{totalPrice}</h2>
+            <button
+              onClick={placeOrder}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Order Now
+            </button>
           </div>
-        )}
-      </div>
+        </>
+      ) : (
+        <div className="text-center mt-10">
+          <h2 className="text-xl font-semibold mb-4">
+            Your cart is empty 🛒
+          </h2>
+          <button
+            onClick={() => navigate("/")}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+          >
+            Go Shopping
+          </button>
+        </div>
+      )}
     </div>
   );
 }

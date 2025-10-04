@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Nav(props) {
   const [sfsl, setSfsl] = useState(true);   // login status
   const [role, setRole] = useState("ROLE_USER"); // default role
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Run on mount
@@ -45,10 +46,8 @@ export default function Nav(props) {
       );
 
       if (res.data.statusBoolean) {
-        console.log("everything is fine");
         setSfsl(true);
         setRole(res.data.message); // ✅ set role directly
-        console.log("role",res.data.message)
         props.logginStatus(true);
       } else {
         setSfsl(false);
@@ -69,6 +68,7 @@ export default function Nav(props) {
         { withCredentials: true }
       );
       if (res.data.message) {
+        navigate("/auth")
         alert(res.data.message);
         console.log(res.data.message);
       }
@@ -79,29 +79,80 @@ export default function Nav(props) {
   };
 
   return (
-    <>
-      <div>
-        <Link to={"/"}>Home</Link>
+    <nav className="bg-white shadow-md">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-bold text-indigo-600">
+          ShopEase
+        </Link>
 
-        {!sfsl && <Link to={"/auth"}>Sign up</Link>}
+        {/* Links */}
+        <div className="flex items-center space-x-6">
+          {!sfsl && (
+            <Link
+              to="/auth"
+              className="text-gray-700 hover:text-indigo-600 font-medium"
+            >
+              Sign up / Login
+            </Link>
+          )}
 
-        {sfsl && (
-          <div>
-            <Link to={"/cart"}>Cart</Link>
-            <Link to={"/profile"}>Profile</Link>
-            <Link to={"/orders"}>Orders</Link>
+          {sfsl && (
+            <>
+              <Link
+                to="/cart"
+                className="text-gray-700 hover:text-indigo-600 font-medium"
+              >
+                Cart
+              </Link>
+              <Link
+                to="/profile"
+                className="text-gray-700 hover:text-indigo-600 font-medium"
+              >
+                Profile
+              </Link>
+              <Link
+                to="/orders"
+                className="text-gray-700 hover:text-indigo-600 font-medium"
+              >
+                Orders
+              </Link>
 
-            {/* ✅ Show admin panel only if ROLE_ADMIN */}
-            {role === "ROLE_ADMIN" && <div>
-              <Link to={"/addProduct"}>Add product</Link>
-              <Link to={"/editProduct"}>Edit product</Link>
-              <Link to={"/userOrders"}>All orders</Link>
-              </div>}
-          </div>
-        )}
+              {/* ✅ Admin only */}
+              {role === "ROLE_ADMIN" && (
+                <div className="flex space-x-4">
+                  <Link
+                    to="/addProduct"
+                    className="text-red-600 font-semibold hover:underline"
+                  >
+                    Add Product
+                  </Link>
+                  <Link
+                    to="/editProduct"
+                    className="text-red-600 font-semibold hover:underline"
+                  >
+                    Edit Product
+                  </Link>
+                  <Link
+                    to="/userOrders"
+                    className="text-red-600 font-semibold hover:underline"
+                  >
+                    All Orders
+                  </Link>
+                </div>
+              )}
 
-        {sfsl && <button onClick={signout}>Logout</button>}
+              <button
+                onClick={signout}
+                className="ml-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
       </div>
-    </>
+    </nav>
   );
 }

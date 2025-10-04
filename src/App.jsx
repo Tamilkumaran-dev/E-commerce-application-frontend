@@ -12,6 +12,7 @@ import AddProduct from './page/adminPages/AddProduct'
 import EditProduct from './page/adminPages/EditProduct'
 import EditProductList from './page/adminPages/EditProductList'
 import UserOrder from './page/adminPages/UserOrders'
+import Footer from './layouts/Footer'
 
 export const LoginContext = createContext();  
 
@@ -24,7 +25,6 @@ function App() {
     <LoginContext.Provider value={sendLoginStatus}>
     <BrowserRouter>
     <Nav logginStatus = {setSendLoginStatus}/>
-    
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/auth' element={<Auth/>}/>
@@ -36,9 +36,9 @@ function App() {
         <Route path='/editProduct' element={<EditProductList/>}/>
         <Route path='/editProduct/:productId' element={<EditProduct/>}/>
         <Route path='/userOrders' element={<UserOrder/>}/>
-
       </Routes>
-    </BrowserRouter>
+      <Footer/>    
+      </BrowserRouter>
     </LoginContext.Provider>
     </>
   )
