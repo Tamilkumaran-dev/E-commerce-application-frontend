@@ -31,7 +31,7 @@ export default function Order() {
       const res = await axios.put(
         `${import.meta.env.VITE_BASE_URL}order/cancelProduct/${userId}/${orderId}/${productId}`,
         {},
-        { withCredentials: true }
+        {headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
       getOrderList();
       alert(res.data.message);

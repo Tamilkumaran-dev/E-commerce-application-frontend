@@ -42,7 +42,7 @@ export default function Nav(props) {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}profile/isLoggedIn`,
         {},
-        { withCredentials: true }
+        { headers: { "Content-Type": "application/json" },withCredentials: true }
       );
 
       if (res.data.statusBoolean) {
@@ -65,7 +65,7 @@ export default function Nav(props) {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}auth/logout`,
         {},
-        { withCredentials: true }
+        {headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
       if (res.data.message) {
         navigate("/auth")

@@ -19,7 +19,7 @@ function Login({ switchAuth }) {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}auth/login`,
         login,
-        { withCredentials: true }
+        { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
 
       if (res.data.status === true) {

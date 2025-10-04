@@ -49,7 +49,7 @@ export default function Cart() {
       const res = await axios.put(
         `${import.meta.env.VITE_BASE_URL}cart/removeProduct/${userId}/${productId}`,
         {},
-        { withCredentials: true }
+        {headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
       if (res.data.statusBoolean) {
         alert(res.data.message);
@@ -71,7 +71,7 @@ export default function Cart() {
           const res = await axios.put(
             `${import.meta.env.VITE_BASE_URL}order/orderPlaced/${userId}`,
             {},
-            { withCredentials: true }
+            {headers: { "Content-Type": "application/json" }, withCredentials: true }
           );
           alert(res.data.message);
           getCart();

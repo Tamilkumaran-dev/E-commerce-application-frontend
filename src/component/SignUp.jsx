@@ -26,7 +26,7 @@ function SignUp({ switchAuth }) {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}auth/signup`,
         userData,
-        { withCredentials: true }
+        { headers: { "Content-Type": "application/json" },withCredentials: true }
       );
 
       if (res.data.status) {

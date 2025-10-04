@@ -23,7 +23,7 @@ export default function AddProduct() {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}product/addProduct`,
         product,
-        { withCredentials: true }
+        { headers: { "Content-Type": "application/json" },withCredentials: true }
       );
       alert(res.data.message);
 

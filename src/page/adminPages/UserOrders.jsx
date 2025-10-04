@@ -32,7 +32,7 @@ export default function UserOrder() {
       const res = await axios.put(
         `${import.meta.env.VITE_BASE_URL}order/updateOrder/${id}/${status}`,
         {},
-        { withCredentials: true }
+        { headers: { "Content-Type": "application/json" },withCredentials: true }
       );
       alert(res.data.message);
       setEditOrderId(null);

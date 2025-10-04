@@ -44,7 +44,7 @@ export default function EditProduct() {
       const res = await axios.put(
         `${import.meta.env.VITE_BASE_URL}product/update/${productId}`,
         product,
-        { withCredentials: true }
+        { headers: { "Content-Type": "application/json" },withCredentials: true }
       );
       alert(res.data.message || "Product updated successfully");
       navigate("/editProduct");

@@ -53,7 +53,7 @@ export default function Profile() {
       const res = await axios.put(
         `${import.meta.env.VITE_BASE_URL}profile/UpdateProfile`,
         profileData,
-        { withCredentials: true }
+        { headers: { "Content-Type": "application/json" },withCredentials: true }
       );
       if (res.data) {
         getProfile();
